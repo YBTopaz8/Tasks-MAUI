@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="TasksCM.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewsD="clr-namespace:TasksCM.Pages.Desktop"
+    Shell.FlyoutBehavior="Flyout"
+    >
+
+    <FlyoutItem FlyoutDisplayOptions="AsSingleItem" x:Name="shellTabbar">
+        <Tab Title="Home" x:Name="homeTab">
+            <ShellContent ContentTemplate="{DataTemplate viewsD:HomePageD}"/>
+        </Tab>
+        <Tab Title="UpSert" x:Name="upsertTab">
+            <ShellContent ContentTemplate="{DataTemplate viewsD:UpSertSingleTaskD}"/>
+        </Tab> 
+    </FlyoutItem> 
+
+</Shell>
