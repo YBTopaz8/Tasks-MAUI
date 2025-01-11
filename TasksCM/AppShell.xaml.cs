@@ -7,6 +7,6 @@ public partial class AppShell : Shell
         InitializeComponent();
 
         Routing.RegisterRoute(nameof(HomePageD), typeof(HomePageD));
-        Routing.RegisterRoute(nameof(UpSertSingleTaskD), typeof(UpSertSingleTaskD));
+        
     }
 }

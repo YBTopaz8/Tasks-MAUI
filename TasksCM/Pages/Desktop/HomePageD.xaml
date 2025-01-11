@@ -1,6 +1,237 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncf="http://schemas.syncfusion.com/maui/toolkit"  
              x:Class="TasksCM.Pages.Desktop.HomePageD"
-             Title="HomePageD">
+             xmlns:models="clr-namespace:TasksCM.Models"
+             xmlns:vm="clr-namespace:TasksCM"
+             xmlns:utils="clr-namespace:TasksCM.Utilities"
+             x:DataType="vm:ViewModel"
+             Title="HomePage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <utils:BoolToInverseConverter x:Key="BoolToInverse"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+
+        <Grid RowDefinitions="Auto,Auto, Auto" RowSpacing="10">
+
+            <Border Grid.Row="0">
+            <Grid HorizontalOptions="Center" RowDefinitions="Auto,Auto">
+
+                <syncf:SfChipGroup Grid.Row="0" IsVisible="{Binding IsConnected, Converter={x:StaticResource BoolToInverse}}"
+                               HorizontalOptions="Center" 
+                     ChipType="Choice" ChoiceMode="Single" SelectionChanged="SongShellChip_SelectionChanged"
+                     x:Name="SettingsTab" >
+                    <syncf:SfChip Text="Online Login" CommandParameter="0"/>
+                    <syncf:SfChip Text="Online Sign Up" CommandParameter="1"/>
+                    
+                </syncf:SfChipGroup>
+
+                <VerticalStackLayout Grid.Row="1" IsVisible="{Binding IsConnected, Converter={x:StaticResource BoolToInverse}}"
+                x:Name="LoginParseUI" Spacing="20" 
+                     VerticalOptions="Center" >
+                    <VerticalStackLayout.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Label">
+                                <Setter Property="FontSize" Value="23"/>
+                                <Setter Property="VerticalOptions" Value="Center"/>
+                            </Style>
+
+                            <Style TargetType="VerticalStackLayout">
+                                <Setter Property="Spacing" Value="5"/>
+                            </Style>
+                            <Style TargetType="HorizontalStackLayout">
+                                <Setter Property="Spacing" Value="5"/>
+                            </Style> 
+
+                            <Style TargetType="Entry">
+                                <Setter Property="WidthRequest" Value="150"/>
+                                <Setter Property="HeightRequest" Value="50"/>
+                            </Style>
+                        </ResourceDictionary>
+                    </VerticalStackLayout.Resources>
+
+                    <VerticalStackLayout IsVisible="{Binding IsConnected, Converter={x:StaticResource BoolToInverse}}" >
+
+                        <Label Text="Online User Name" VerticalOptions="Center"/>
+                        <Entry  x:Name="LoginUname"                             
+                            ClearButtonVisibility="WhileEditing"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding IsConnected, Converter={x:StaticResource BoolToInverse}}">
+                        <Label Text="Online Password"/>
+                        <Entry IsPassword="True" ClearButtonVisibility="WhileEditing"
+                           x:Name="LoginPass" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding IsConnected, Converter={x:StaticResource BoolToInverse}}">
+                        <syncf:SfChip Text="Login" 
+                       Clicked="SettingsAction" CommandParameter="0"
+                      
+                      FontAttributes="Bold"/>
+
+                        <syncf:SfChip Text="Forgotten Password" FontAttributes="Italic"
+                       Clicked="SettingsAction" CommandParameter="2"
+                      />
+
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1"
+                x:Name="SignUpParseUI" Spacing="15" IsVisible="False"
+                     VerticalOptions="Center">
+
+                    <Label Text="User Sign Up" FontSize="26"/>
+
+                    <Entry Placeholder="User Name" x:Name="SignUpUname" 
+                       ClearButtonVisibility="WhileEditing"/>
+                    <Entry Placeholder="Email" x:Name="SignUpEmail" 
+                       ClearButtonVisibility="WhileEditing"/>
+                    <Entry Placeholder="Password" x:Name="SignUpPass" IsPassword="True" ClearButtonVisibility="WhileEditing"
+           />
+                    <syncf:SfChip Text="Sign Up" x:Name="SignUpBtn" 
+                   Clicked="SettingsAction" CommandParameter="1"
+                      />
+
+                    <HorizontalStackLayout Spacing="15" HorizontalOptions="End">
+                        <syncf:SfChip Text="Login" Clicked="SignLoginUp_Clicked"
+                      CommandParameter="0"
+                  BackgroundColor="Transparent" FontSize="15" />
+
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" IsVisible="{Binding IsConnected}">
+                    <Image Source="greatsmile.gif" HeightRequest="30" 
+                           IsAnimationPlaying="{Binding IsConnected}" />
+                </VerticalStackLayout>
+            </Grid>
+            
+        </Border>
+        <Border Grid.Row="1">
+
+            <Grid RowDefinitions="Auto,*" ColumnSpacing="15" Margin="10">
+                <Border Grid.Row="0">
+                    <VerticalStackLayout 
+                                 >
+                    <Label Text="Task Name" />
+                    <Entry Text="{Binding SelectedTaskObject.Name}" x:Name="taskName"/>
+
+                    <Label Text="Task Description" />
+                    <Entry Text="{Binding SelectedTaskObject.Description}" x:Name="taskDesc"/>
+
+                    <Label Text="Task Additional Notes" />
+                    <Entry Text="{Binding SelectedTaskObject.AdditionalNotes}" x:Name="taskAddNotes"/>
+
+                            <HorizontalStackLayout >
+                                <Label Text="IsDone: " VerticalOptions="Center"
+                                       FontSize="21"/>
+                                <CheckBox IsChecked="{Binding SelectedTaskObject.IsDone}"
+                                          VerticalOptions="End" CheckedChanged="CheckBox_CheckedChanged"/>
+                            </HorizontalStackLayout>
+
+                            <DatePicker x:Name="taskDeadLine"/>
+
+                    <Button Text="Save" x:Name="saveTaskBtn" Clicked="SaveTaskBtn_Clicked"/>
+                </VerticalStackLayout>
+                </Border>
+                
+                <CollectionView ItemsSource="{Binding AllTasks}" Grid.Row="1"  BackgroundColor="Transparent"
+                            EmptyView="Empty" x:Name="TaskObjectColView" SelectionChangedCommand="{Binding SelectTaskOnUICommand}"
+                            SelectionChangedCommandParameter="{Binding SelectedTaskObject}"
+                            SelectionMode="Single" SelectedItem="{Binding SelectedTaskObject}"
+                            >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TaskObject">
+                            <VerticalStackLayout HorizontalOptions="Center" >
+
+                                <Label Text="{Binding Name,StringFormat='Title: {0}'}" />
+                                <Label Text="{Binding Description,StringFormat='Description: {0}'}" />
+
+                                <Button Text="Delete"  Clicked="Button_Clicked" 
+                                        HorizontalOptions="Start" FontSize="12" HeightRequest="35"
+                                        BackgroundColor="Transparent" TextColor="Red"
+          CommandParameter="{Binding .}"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="2">
+            <Grid RowSpacing="10" RowDefinitions="200,*">
+
+                <CollectionView ItemsSource="{Binding TaskUpdatess}" EmptyView="Empty" x:Name="TaskUpdatesColView"
+                            Grid.Row="0"  VerticalOptions="Start" SelectionMode="Single"
+                            >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TaskUpdate">
+                            <VerticalStackLayout Margin="10,10" VerticalOptions="Start"
+                                             >
+
+                                <syncf:SfChip Text="Update" TextColor="White" FontSize="12">
+                                    <syncf:SfChip.Triggers>
+                                        <DataTrigger TargetType="syncf:SfChip" Binding="{Binding UpdateType}" Value="0">
+                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                            <Setter Property="Text" Value="Task Created"/>
+                                            <Setter Property="FontAttributes" Value="Italic"/>
+                                            <Setter Property="HorizontalOptions" Value="Center"/>
+                                            <Setter Property="WidthRequest" Value="150"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+
+                                        <DataTrigger TargetType="syncf:SfChip" Binding="{Binding UpdateType}" Value="1">
+                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                            <Setter Property="Text" Value="Task Updated"/>
+                                            <Setter Property="FontAttributes" Value="Italic"/>
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+
+                                        <DataTrigger TargetType="syncf:SfChip" Binding="{Binding UpdateType}" Value="4">
+                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                            <Setter Property="TextColor" Value="Aqua"/>
+                                            <Setter Property="StrokeThickness" Value="0"/>
+                                                <Setter Property="IsVisible" Value="True"/>
+                                                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                                            <Setter Property="Text" Value="{Binding UpdateContent}"/>
+                                            <Setter Property="IsVisible" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="syncf:SfChip" Binding="{Binding UpdateType}" Value="5">
+                                            <Setter Property="BackgroundColor" Value="Blue"/>
+                                                <Setter Property="TextColor" Value="AliceBlue"/>
+                                                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                                            <Setter Property="Text" Value="{Binding UpdateContent}"/>
+                                            <Setter Property="IsVisible" Value="True"/>
+                                            <Setter Property="WidthRequest" Value="450"/>
+                                        </DataTrigger>
+
+                                    </syncf:SfChip.Triggers>
+                                </syncf:SfChip>
+                                    <Label Text="{Binding TaskPlatForm,StringFormat='Sent on {0}'}"/>
+                                <BoxView HeightRequest="0.3" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <VerticalStackLayout Grid.Row="1">
+                    <Entry x:Name="NewTaskUpdateContext" Text="{Binding Note}"/>
+                    <Button Text="Add Note" HorizontalOptions="Center"
+                        x:Name="AddNewTaskUpdateNote" Command="{Binding SendNoteCommand}"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        </Grid>
+    </ScrollView>
+
 </ContentPage>

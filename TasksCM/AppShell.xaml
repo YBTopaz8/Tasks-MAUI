@@ -10,9 +10,6 @@
     <FlyoutItem FlyoutDisplayOptions="AsSingleItem" x:Name="shellTabbar">
         <Tab Title="Home" x:Name="homeTab">
             <ShellContent ContentTemplate="{DataTemplate viewsD:HomePageD}"/>
-        </Tab>
-        <Tab Title="UpSert" x:Name="upsertTab">
-            <ShellContent ContentTemplate="{DataTemplate viewsD:UpSertSingleTaskD}"/>
         </Tab> 
     </FlyoutItem> 
 
