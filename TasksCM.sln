@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksCM", "TasksCM\TasksCM.csproj", "{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseLiveQuery", "..\parse-live-query-dotnetss\ParseLiveQuery\ParseLiveQuery.csproj", "{2D3B1035-1B98-48DB-9F38-5C7BD5352644}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +15,13 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EB00D84-F28B-46AA-A84F-13E5B2DF4B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3B1035-1B98-48DB-9F38-5C7BD5352644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3B1035-1B98-48DB-9F38-5C7BD5352644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3B1035-1B98-48DB-9F38-5C7BD5352644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3B1035-1B98-48DB-9F38-5C7BD5352644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

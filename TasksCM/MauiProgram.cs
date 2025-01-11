@@ -28,12 +28,14 @@ public static class MauiProgram
 
         //Register Desktop pages here as singleton services
         builder.Services.AddSingleton<HomePageD>();
-        builder.Services.AddSingleton<UpSertSingleTaskD>();        
         builder.Services.AddSingleton<TasksCMWindow>();
 
-        //Register mobile pages here as singleton services
-        builder.Services.AddSingleton<HomePageM>();
-        builder.Services.AddSingleton<UpSertSingleTaskM>();
+
+        //Register ViewModels here as singleton service
+        builder.Services.AddSingleton<ViewModel>();
+
+        //singleton == dispo durant toute l'app!
+        
         return builder.Build();
     }
 }
